@@ -1,26 +1,221 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ---------------------------------------------------------------
+   SQ Roofing design system
+   Derived from the logo: monoline, pure black, wide letterspacing,
+   generous white space. Monochrome with one warm signal color
+   reserved for storm/urgent messaging.
+   --------------------------------------------------------------- */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Surfaces */
+  --color-paper: #ffffff;
+  --color-bone: #f6f5f2;
+  --color-bone-deep: #eeece6;
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #1c1c1a;
+
+  /* Text */
+  --color-muted: #6e6b64;
+  --color-muted-light: #9b978e;
+
+  /* Lines */
+  --color-line: #e2e0da;
+  --color-line-strong: #c9c6bd;
+  --color-line-dark: #2e2e2b;
+
+  /* Single warm signal color — storm damage, urgency, emphasis only */
+  --color-signal: #a63d2f;
+  --color-signal-soft: #f3e6e2;
+
+  --font-display: var(--font-instrument-serif);
+  --font-sans: var(--font-inter);
+
+  /* Editorial type scale */
+  --text-display: clamp(2.75rem, 7vw, 5.5rem);
+  --text-display--line-height: 1.02;
+  --text-h1: clamp(2.25rem, 5vw, 3.75rem);
+  --text-h1--line-height: 1.06;
+  --text-h2: clamp(1.75rem, 3.4vw, 2.75rem);
+  --text-h2--line-height: 1.12;
+  --text-h3: clamp(1.25rem, 2vw, 1.625rem);
+  --text-h3--line-height: 1.25;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-feature-settings: "kern", "liga", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Keyboard focus only — never a ring on mouse clicks */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------
+   Utilities
+   --------------------------------------------------------------- */
+
+/* The logo's signature wide-tracked uppercase label */
+.eyebrow {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.eyebrow-light {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Display type — Instrument Serif, optically tightened */
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Thin top rule that opens most sections */
+.rule-top {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Link with an underline that draws in on hover */
+.link-draw {
+  position: relative;
+  display: inline-block;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.link-draw:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Placeholder imagery until Barry's real job photos land.
+   Swap <PhotoSlot> for <Image> and this goes away. */
+.photo-slot {
+  background-color: var(--color-bone-deep);
+  background-image:
+    linear-gradient(135deg, rgba(10, 10, 10, 0.045) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(10, 10, 10, 0.045) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(10, 10, 10, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(10, 10, 10, 0.03) 25%, transparent 25%);
+  background-size: 28px 14px;
+  background-position: 0 0, 14px 0, 14px -7px, 0 7px;
+}
+
+.photo-slot-dark {
+  background-color: #17171a;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%);
+  background-size: 28px 14px;
+  background-position: 0 0, 14px 0, 14px -7px, 0 7px;
+}
+
+/* ---------------------------------------------------------------
+   Scroll reveals — pure CSS, no JavaScript.
+
+   Uses scroll-driven animations (`animation-timeline: view()`), wrapped in
+   @supports so the hidden starting state only ever applies in browsers that
+   can actually animate it back. Browsers without support simply render every
+   section normally.
+
+   This is deliberate: an earlier version hid content with a class added by
+   script, which meant a JS failure could blank the page. On a site whose
+   entire job is generating phone calls, content must never depend on a script
+   running. No JS also means no hydration mismatch and a smaller bundle.
+   --------------------------------------------------------------- */
+
+/* The hidden starting state is scoped to .js, which is server-rendered onto
+   <html> in layout.tsx — not added by a script, so there's no hydration
+   mismatch and no flash. The <noscript> block in layout.tsx cancels it for
+   anyone browsing without JavaScript, so content is never unreachable.
+
+   (A pure-CSS `animation-timeline: view()` version was tried first and is the
+   nicer approach on paper, but the ViewTimeline reported currentTime: null —
+   inactive — leaving every section at opacity 0. Not worth the risk here.) */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Entrance animation for above-the-fold content, which is already past its
+   scroll-timeline entry point on load. Stagger with --d. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js .reveal,
+  .js .reveal.is-visible,
+  .rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

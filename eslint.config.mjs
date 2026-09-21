@@ -13,6 +13,19 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      /**
+       * This site is mostly prose, and prose has apostrophes in it. The real
+       * purpose of this rule is catching `>` and `}`, which genuinely break
+       * JSX parsing — so we keep it on for those and let apostrophes and
+       * quotes be written normally. Escaping every "don't" to "don&apos;t"
+       * makes the copy materially harder to read and edit, and Barry will be
+       * editing this copy.
+       */
+      "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
+    },
+  },
 ]);
 
 export default eslintConfig;

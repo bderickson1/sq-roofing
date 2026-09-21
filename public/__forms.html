@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Form definitions</title>
+  </head>
+  <body>
+    <!--
+      Netlify detects forms by parsing static HTML at deploy time. A Next.js
+      App Router form is rendered by React, so Netlify never sees it. This file
+      declares the form's shape so Netlify registers it; the real form in
+      src/components/contact-form.tsx POSTs here.
+
+      Every `name` below must match a field name in that component exactly.
+      If you add a field there, add it here too or its value will be dropped.
+    -->
+    <form name="estimate-request" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="estimate-request" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="tel" name="phone" />
+      <input type="email" name="email" />
+      <input type="text" name="city" />
+      <input type="text" name="service" />
+      <textarea name="message"></textarea>
+      <input type="text" name="urgency" />
+    </form>
+  </body>
+</html>

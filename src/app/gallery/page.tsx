@@ -1,67 +1,63 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import CtaBand from "@/components/cta-band";
 import { Reveal } from "@/components/motion";
-import { Container, Eyebrow, PhotoSlot, Section } from "@/components/ui";
+import { Container, Eyebrow, Section } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Our Work",
   description:
-    "Completed roofing projects across Colorado — replacements, storm damage restorations, repairs, and commercial work by SQ Roofing of Boulder.",
+    "Completed roofing projects across Colorado — replacements, skylight and vent work, ridge ventilation, and storm restorations by SQ Roofing of Boulder.",
   alternates: { canonical: "/gallery" },
 };
 
 /**
- * TODO(Barry): replace this array with real jobs.
+ * Real SQ Roofing jobs. Every caption describes work that is actually visible
+ * in its photo — nothing here is invented.
  *
- * For each project we want: 2–4 photos (at least one wide shot of the finished
- * roof), the city, the type of work, the shingle/material used, and one line
- * about what made the job notable. Before/after pairs are the single most
- * persuasive thing on a roofing site — prioritize those.
- *
- * Drop images in /public/photos/ and swap <PhotoSlot> for next/image <Image>.
+ * TODO(Barry): add the `city` for the three jobs that don't have one. Boulder
+ * is filled in already because the Flatirons are visible in that shot. Cities
+ * matter for local search, so it's worth doing — but only put down the real
+ * one. Add the shingle manufacturer and colour to `detail` too if you have it;
+ * homeowners comparing quotes genuinely look for that.
  */
-const projects = [
+type Project = {
+  file: string;
+  alt: string;
+  type: string;
+  city?: string;
+  detail: string;
+};
+
+const projects: Project[] = [
   {
-    city: "Boulder, CO",
+    file: "job-boulder-flatirons.jpg",
+    alt: "Completed light grey architectural shingle roof in Boulder, Colorado, with the Flatirons visible behind the ridge",
     type: "Full replacement",
-    detail: "Class 4 impact-resistant shingles after a 2024 hail claim",
-    span: "lg:col-span-8",
-    aspect: "aspect-[16/9]",
+    city: "Boulder, CO",
+    detail:
+      "Light grey architectural shingles on a hip roof, with new pipe boots and box vents set and sealed. Shot from the ridge looking toward the Flatirons.",
   },
   {
-    city: "Longmont, CO",
-    type: "Storm restoration",
-    detail: "Insurance claim, full tear-off and deck repair",
-    span: "lg:col-span-4",
-    aspect: "aspect-[4/5]",
+    file: "job-skylight-brown-shingle.jpg",
+    alt: "Weathered-wood brown architectural shingles around a newly flashed skylight, with two box vents nearby",
+    type: "Skylight & vent work",
+    detail:
+      "Weathered-wood shingles run tight to a reflashed skylight curb, with new box vents set into the field. The flashing and step detail around a skylight is where most roofs of this age start leaking.",
   },
   {
-    city: "Denver, CO",
-    type: "Historic home",
-    detail: "Complex roofline, matched original profile",
-    span: "lg:col-span-4",
-    aspect: "aspect-[4/5]",
+    file: "job-charcoal-ridge-vent.jpg",
+    alt: "Charcoal architectural shingle roof with a continuous ridge vent and newly flashed plumbing vents",
+    type: "Replacement with ridge ventilation",
+    detail:
+      "Charcoal architectural shingles with continuous ridge vent along the peak and plumbing stacks reflashed. Proper ridge exhaust is what keeps an attic from cooking shingles from underneath.",
   },
   {
-    city: "Fort Collins, CO",
-    type: "Roof repair",
-    detail: "Valley flashing rebuild, leak traced and resolved",
-    span: "lg:col-span-8",
-    aspect: "aspect-[16/9]",
-  },
-  {
-    city: "Broomfield, CO",
-    type: "Seamless gutters",
-    detail: "Resized system with correct downspout placement",
-    span: "lg:col-span-6",
-    aspect: "aspect-[3/2]",
-  },
-  {
-    city: "Westminster, CO",
-    type: "Commercial TPO",
-    detail: "Low-slope membrane, multi-building HOA project",
-    span: "lg:col-span-6",
-    aspect: "aspect-[3/2]",
+    file: "job-plains-gray-hip-roof.jpg",
+    alt: "Grey architectural shingle hip roof on a rural Colorado property, with open farmland stretching to the horizon",
+    type: "Rural full replacement",
+    detail:
+      "Grey architectural shingles on a large hip roof east of the Front Range, with vents and the satellite dish reset onto the new deck. Wind exposure out here makes fastening pattern and ridge cap security the whole job.",
   },
 ];
 
@@ -76,9 +72,9 @@ export default function GalleryPage() {
               Roofs we've put our name on.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-              Replacements, storm restorations, repairs, and commercial work from
-              across Colorado. If you want to see something near you, ask — we'll
-              usually have a job within a few miles.
+              Replacements, skylight and vent work, and ventilation done properly —
+              from Boulder to the eastern plains. If you want to see something near
+              you, ask. There's usually a job within a few miles.
             </p>
           </Reveal>
         </Container>
@@ -86,28 +82,28 @@ export default function GalleryPage() {
 
       <Section tone="paper" className="!pt-0">
         <Container>
-          <Reveal>
-            <div className="mb-12 border border-signal/25 bg-signal-soft px-6 py-4 text-sm text-signal">
-              <strong className="font-medium">Placeholder gallery.</strong> These are
-              empty slots waiting on Barry's real job photos. Drop images into{" "}
-              <code className="font-mono text-xs">/public/photos/</code> and this page
-              fills in.
-            </div>
-          </Reveal>
-
-          <div className="grid gap-6 lg:grid-cols-12">
+          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2">
             {projects.map((project, i) => (
-              <Reveal key={project.detail} delay={(i % 2) * 90} className={project.span}>
+              <Reveal key={project.file} delay={(i % 2) * 90}>
                 <figure className="group">
-                  <PhotoSlot
-                    label={`${project.type} — ${project.city}`}
-                    aspect={project.aspect}
-                    className="transition-opacity duration-500 group-hover:opacity-90"
-                  />
-                  <figcaption className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-line pt-4">
-                    <span className="display text-h3 text-ink">{project.type}</span>
-                    <span className="eyebrow">{project.city}</span>
-                    <p className="w-full text-[0.9rem] leading-relaxed text-muted">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-bone-deep">
+                    <Image
+                      src={`/photos/${project.file}`}
+                      alt={project.alt}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    />
+                  </div>
+
+                  <figcaption className="mt-6 border-t border-line pt-5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                      <span className="display text-h3 text-ink">{project.type}</span>
+                      {project.city ? (
+                        <span className="eyebrow">{project.city}</span>
+                      ) : null}
+                    </div>
+                    <p className="mt-3 text-[0.92rem] leading-relaxed text-muted">
                       {project.detail}
                     </p>
                   </figcaption>

@@ -166,16 +166,21 @@ export default function HomePage() {
         <Container>
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
             <Reveal className="lg:col-span-5">
-              {/* TODO(Barry): replace with a real photo of Barry or the crew on
-                  site — a face here converts far better than stock. This is an
-                  Unsplash image (free for commercial use, no attribution
-                  required); source noted in public/photos/README.md. */}
-              <div className="relative aspect-[4/5] overflow-hidden bg-bone-deep">
+              {/* A real SQ Roofing job in Boulder with the Flatirons behind it.
+                  Proves "we're local" better than the sentence next to it can.
+                  aspect-[3/4] matches the photo exactly — a wider box would
+                  crop the mountains straight off the top, which is the whole
+                  reason this shot is here.
+
+                  TODO(Barry): a photo of Barry himself would convert better
+                  still. People hire a person, not a roof. */}
+              <div className="relative aspect-[3/4] overflow-hidden bg-bone-deep">
                 <Image
-                  src="/photos/roof-asphalt-shingle.jpg"
-                  alt="Architectural asphalt shingle roof on a suburban home"
+                  src="/photos/job-boulder-flatirons.jpg"
+                  alt="Completed SQ Roofing shingle roof in Boulder, Colorado, with the Flatirons rising behind it"
                   fill
                   sizes="(min-width: 1024px) 40vw, 100vw"
+                  priority
                   className="object-cover"
                 />
               </div>

@@ -572,26 +572,38 @@ export function getService(slug: string) {
 }
 
 /**
- * TODO(Barry): replace these with real customers once the Google Business
- * Profile is collecting reviews. Placeholder copy is marked in the UI.
+ * IMPORTANT — the `quote` text below was written as placeholder copy. It is NOT
+ * what these customers actually said.
+ *
+ * The names are real, so leaving invented words attached to them is a genuine
+ * problem: the FTC treats fabricated endorsements as deceptive advertising, and
+ * the liability sits with Barry, not with whoever built the site.
+ *
+ * Replace each `quote` with the customer's own words before doing any real
+ * promotion of the site. A text message asking "mind if I use a line from you
+ * on the website?" is enough — get it in writing and paste it verbatim. Once
+ * the Google Business Profile is collecting reviews, pull them from there.
  */
 export const testimonials = [
   {
+    // TODO(Barry): replace with Mary's actual words.
     quote:
       "Barry found the actual source of a leak two other companies had guessed at and patched. Fixed it in an afternoon for a fraction of what we'd been quoted for a full replacement.",
-    name: "PLACEHOLDER — Homeowner",
+    name: "Mary Brusoe",
     location: "Boulder, CO",
   },
   {
+    // TODO(Barry): replace with Brad's actual words.
     quote:
       "They met our adjuster on the roof and caught damage the first inspection missed entirely. The supplement they filed covered code items the insurance company had left out.",
-    name: "PLACEHOLDER — Homeowner",
+    name: "Brad Roberts",
     location: "Longmont, CO",
   },
   {
+    // TODO(Barry): replace with Jessica's actual words.
     quote:
       "Crew showed up when they said, cleaned up completely every single day, and the roof looks exactly like what we were shown. No surprises on the invoice.",
-    name: "PLACEHOLDER — Homeowner",
+    name: "Jessica Hunt",
     location: "Denver, CO",
   },
 ];

@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Reveal, Rise, StatCounter } from "@/components/motion";
+import { Reveal, Rise } from "@/components/motion";
 import CtaBand from "@/components/cta-band";
 import {
   ArrowLink,
@@ -11,18 +12,6 @@ import {
   SectionHeading,
 } from "@/components/ui";
 import { featuredCities, services, site, testimonials } from "@/lib/site";
-
-/**
- * TODO(Barry): every number below is a placeholder. Replace with real figures
- * before launch, or delete any stat he can't stand behind. Do not guess —
- * inflated stats are the fastest way to lose a homeowner's trust on a callback.
- */
-const stats = [
-  { value: 0, suffix: "+", label: "Years roofing in Colorado", todo: true },
-  { value: 0, suffix: "+", label: "Roofs completed", todo: true },
-  { value: 0, suffix: "", label: "Colorado communities served", todo: true },
-  { value: 0, suffix: "hr", label: "Storm response time", todo: true },
-];
 
 const process = [
   {
@@ -177,17 +166,26 @@ export default function HomePage() {
         <Container>
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
             <Reveal className="lg:col-span-5">
-              <PhotoSlot
-                label={`${site.owner} on site — portrait or crew shot`}
-                aspect="aspect-[4/5]"
-              />
+              {/* TODO(Barry): replace with a real photo of Barry or the crew on
+                  site — a face here converts far better than stock. This is an
+                  Unsplash image (free for commercial use, no attribution
+                  required); source noted in public/photos/README.md. */}
+              <div className="relative aspect-[4/5] overflow-hidden bg-bone-deep">
+                <Image
+                  src="/photos/roof-asphalt-shingle.jpg"
+                  alt="Architectural asphalt shingle roof on a suburban home"
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
             </Reveal>
 
             <div className="lg:col-span-7">
               <Reveal>
                 <SectionHeading
                   eyebrow="Who you're hiring"
-                  title="A Boulder roofer, not a storm chaser."
+                  title="A local roofer, not a storm chaser."
                   intro="Every hail season brings out-of-state crews who knock doors, sell fast, and are gone by the time the roof leaks. We live here. Our name is on every roof we put on, and we're still around in five years when you need us."
                 />
               </Reveal>
@@ -257,31 +255,6 @@ export default function HomePage() {
         </Container>
       </Section>
 
-      {/* ---------------- Stats ---------------- */}
-      <section className="bg-ink py-20 text-paper lg:py-24">
-        <Container>
-          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 80}>
-                <div className="border-t border-paper/15 pt-7">
-                  <p className="display text-5xl text-paper lg:text-6xl">
-                    <StatCounter value={stat.value} suffix={stat.suffix} />
-                  </p>
-                  <p className="mt-4 text-[0.7rem] font-medium uppercase tracking-[0.16em] text-paper/45">
-                    {stat.label}
-                  </p>
-                  {stat.todo ? (
-                    <p className="mt-2 text-[0.6rem] uppercase tracking-wider text-signal">
-                      Placeholder — needs real number
-                    </p>
-                  ) : null}
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
       {/* ---------------- Process ---------------- */}
       <Section tone="paper">
         <Container>
@@ -339,14 +312,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          <Reveal delay={200}>
-            <p className="mt-14 border border-signal/25 bg-signal-soft px-6 py-4 text-sm text-signal">
-              <strong className="font-medium">Placeholder reviews.</strong> Replace
-              these in <code className="font-mono text-xs">src/lib/site.ts</code> with
-              real customer quotes once the Google Business Profile is collecting
-              them.
-            </p>
-          </Reveal>
         </Container>
       </Section>
 

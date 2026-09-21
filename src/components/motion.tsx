@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /**
  * Fades content up as it scrolls into view.
@@ -88,79 +88,5 @@ export function Rise({
     >
       {children}
     </div>
-  );
-}
-
-/**
- * Counts up to `value` when scrolled into view — the stat-band treatment
- * used on most established roofing sites, done without the jitter.
- */
-export function StatCounter({
-  value,
-  suffix = "",
-  prefix = "",
-  duration = 1600,
-}: {
-  value: number;
-  suffix?: string;
-  prefix?: string;
-  duration?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  // Start at the final value so the server-rendered HTML carries the real
-  // number. If JS never runs, or the user prefers reduced motion, the stat is
-  // simply correct instead of stuck on zero. The animation below rewinds to 0
-  // only when it's actually about to count up.
-  const [display, setDisplay] = useState(value);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // Already showing the final value — nothing to animate.
-    if (prefersReduced || typeof IntersectionObserver === "undefined") return;
-
-    const run = () => {
-      if (started.current) return;
-      started.current = true;
-      const start = performance.now();
-
-      const tick = (now: number) => {
-        const t = Math.min((now - start) / duration, 1);
-        // easeOutExpo
-        const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-        setDisplay(Math.round(eased * value));
-        if (t < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            run();
-            observer.unobserve(el);
-          }
-        }
-      },
-      { threshold: 0.4 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [value, duration]);
-
-  return (
-    <span ref={ref}>
-      {prefix}
-      {display.toLocaleString()}
-      {suffix}
-    </span>
   );
 }
